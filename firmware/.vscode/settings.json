@@ -1,0 +1,20 @@
+{
+  "files.associations": {
+    "optional": "cpp",
+    "functional": "cpp",
+    "random": "cpp",
+    "ostream": "cpp",
+    "streambuf": "cpp",
+    "array": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "ranges": "cpp",
+    "typeinfo": "cpp",
+    "*.tcc": "cpp",
+    "exception": "cpp",
+    "memory_resource": "cpp",
+    "iosfwd": "cpp",
+    "new": "cpp",
+    "memory": "cpp"
+  }
+}
