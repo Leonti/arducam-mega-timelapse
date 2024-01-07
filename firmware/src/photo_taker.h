@@ -28,14 +28,25 @@ struct ServerResponse {
   CameraConfig config;
 };
 
+enum PICTURE_STATE {
+  IDLE,
+  PHOTO_CONFIG_UPDATED,
+  CAMERA_RESET,
+  CAMERA_CONFIGURED,
+  PICTURE_TAKEN,
+  UPLOAD_STARTED,
+};
+
 class PhotoTaker {
 public:
-  PhotoTaker(const char* cameraId, Arducam_Mega& arducam, HttpClient& configApiClient, HttpClient& uploadClient, Debug& debug);
-  bool begin();
+  PhotoTaker(Arducam_Mega& arducam, HttpClient& configApiClient, HttpClient& uploadClient, Debug& debug);
+  bool begin(const char* cameraId, const char* apiKey);
   void loop();
+  char* getCameraId();
 
 private:
   char cameraId[20];
+  char apiKey[40];
   uint8_t imageBuff[BUFFER_SIZE] = {0};
   unsigned long lastConfigCheck = 0;
   Debug* debug;
@@ -44,7 +55,16 @@ private:
   Arducam_Mega* arducam;
   ServerResponse serverResponse;
   bool getPhotoConfig();
+  void resetCamera();
   void configureCamera();
-  bool uploadPhoto();
+  PICTURE_STATE state = IDLE;
+  uint32_t lastStateChange;
+  uint32_t pictureLength;
+  uint32_t bytesUploaded;
+  int bufferPosition;
+  uint32_t lastUploadUpdate;
+  bool takePicture();
+  bool startUpload();
+  bool continueUpload();
 };
 #endif

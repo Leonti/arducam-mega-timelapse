@@ -6,12 +6,14 @@
 
 class Debug {
 public:
-  Debug(PubSubClient& pubsub, const char* debugTopic);
+  Debug(PubSubClient& pubsub);
+  bool begin(const char* debugTopic);
   void debug(const char* message);
   char debugBuffer[300];
 
 private:
   PubSubClient* pubsub;
-  const char* debugTopic;
+  bool isReady = false;
+  char debugTopic[60];
 };
 #endif

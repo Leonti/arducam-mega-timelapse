@@ -1,11 +1,18 @@
 #include "debug.h"
 
-Debug::Debug(PubSubClient& pubsub, const char* debugTopic) {
-  this->pubsub = &pubsub;
-  this->debugTopic = debugTopic;
+Debug::Debug(PubSubClient& pubsub) {
+  this->pubsub = &pubsub; 
+}
+
+bool Debug::begin(const char* debugTopic) {
+  strcpy(this->debugTopic, debugTopic);
+  isReady = true;
+  return true;
 }
 
 void Debug::debug(const char* message) {
-  pubsub->publish(debugTopic, message);
+  if (isReady) {
+    pubsub->publish(debugTopic, message);
+  }
   Serial.println(message);
 }
